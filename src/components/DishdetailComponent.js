@@ -1,20 +1,33 @@
-import React from 'react'
-import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
+import React from "react";
+import {Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem} from "reactstrap";
+import { Link } from "react-router-dom";
 
-const  DishDetail = (props) => {
+const DishDetail = (props) => {
   return (
     <div className="container">
-    <div className="row">
+      <div className="row">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/menu">Menu</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+        </Breadcrumb>
+        <div className="col-12">
+          <h3>{props.dish.name}</h3>
+          <hr />
+        </div>
+      </div>
+      <div className="row">
         <div className="col-12 col-md-5 m-1">
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments dish={props.dish} />
+          <RenderComments dish={props} />
         </div>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
 function RenderDish(props) {
   if (props.dish != null) {
@@ -32,42 +45,36 @@ function RenderDish(props) {
   }
 }
 
-
 function RenderComments(props) {
-    if (props.dish != null && props.dish.comments != null) {
-      const cmnts = props.dish.comments.map((review) => {
-        return (
-          <div key={review.id}>
-            <ul className="list-unstyled">
-              <li className="list-item">{review.comment}</li>
-              <br />
-              <li className="list-item">
-                --{review.author},
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                }).format(new Date(Date.parse(review.date)))}
-              </li>
-            </ul>
-            <br />
-          </div>
-        );
-      });
+  if (props.dish != null && props.dish.comments != null) {
+    const cmnts = props.dish.comments.map((review) => {
       return (
-        <div>
-          <h4> Comments </h4>
-          <ul className="list-unstyled">{cmnts}</ul>
+        <div key={review.id}>
+          <ul className="list-unstyled">
+            <li className="list-item">{review.comment}</li>
+            <br />
+            <li className="list-item">
+              --{review.author},
+              {new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+              }).format(new Date(Date.parse(review.date)))}
+            </li>
+          </ul>
+          <br />
         </div>
       );
-    } else {
-      return <div></div>;
-    }
+    });
+    return (
+      <div>
+        <h4> Comments </h4>
+        <ul className="list-unstyled">{cmnts}</ul>
+      </div>
+    );
+  } else {
+    return <div></div>;
   }
-
+}
 
 export default DishDetail;
-
-
-
-
