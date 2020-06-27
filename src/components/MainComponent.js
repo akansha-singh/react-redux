@@ -10,6 +10,7 @@ import { COMMENTS } from '../shared/comments';
 import { PROMOTIONS } from '../shared/promotions';
 import { LEADERS } from '../shared/leaders';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 
 
 export class Main extends Component {
@@ -33,7 +34,7 @@ export class Main extends Component {
                 promotion={this.state.promotions.filter((promo)=>promo.featured)[0]}
                 leader={this.state.leaders.filter((leaders)=>leaders.featured)[0]}/>
       );
-    }
+    };
 
     const DishWithId = ({match}) => {
       return(
@@ -50,6 +51,7 @@ export class Main extends Component {
               <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
               <Route path='/menu/:dishId' component={DishWithId} />
               <Route path='/contactus' component={Contact} />
+              <Route exact path='/aboutus' component={()=><About leaders = {this.state.leaders}/>}/>
               <Redirect to="/home" />
           </Switch>
         <Footer/>
